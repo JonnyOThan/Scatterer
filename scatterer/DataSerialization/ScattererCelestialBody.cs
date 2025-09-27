@@ -30,7 +30,9 @@ namespace Scatterer
         public bool isFound = false;
         public bool active;
         public ProlandManager prolandManager;
-        
+
+        public float currentDistanceFromCamera = 0f;
+
         public ScattererCelestialBody ()
         {
             

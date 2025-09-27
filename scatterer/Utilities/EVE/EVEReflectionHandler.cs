@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 namespace Scatterer
 {
-    public struct EVECloudLayer
+    public class EVECloudLayer
     {
         public object CloudObject;
         public Material Clouds2dMaterial;
@@ -15,6 +15,8 @@ namespace Scatterer
         public Material CloudShadowMaterial;
         public Material ParticleVolumetricsMaterial;
         public Material RaymarchedVolumetricsMaterial, ReflectionProbeRaymarchedVolumetricsMaterial;
+        public float Altitude;
+        public float CurrentDistanceToCamera;
     }
 
     public class EVEReflectionHandler
@@ -59,6 +61,7 @@ namespace Scatterer
 
                 EVECloudLayer cloudLayer = new EVECloudLayer();
                 cloudLayer.CloudObject = cloudObject;
+                cloudLayer.Altitude = (float)cloudObject.GetType().GetField("altitude", flags).GetValue(cloudObject);
 
                 Map2DLayer(ref cloudLayer, cloudObject, body);
                 MapParticleVolumetrics(ref cloudLayer, cloudObject, body);

@@ -761,11 +761,9 @@ namespace Scatterer
 
             ReInitMaterialUniformsOnRenderTexturesLoss();
 
-            // make the clouds2d material optional
-            // add fields for volumetrics and raymarched volumetrics
-            if (Scatterer.Instance.EveReflectionHandler.EVECloudLayers.ContainsKey(celestialBodyName))
+            if (Scatterer.Instance.EveReflectionHandler.EVECloudLayers.TryGetValue(celestialBodyName, out var layers))
             {
-                foreach (EVECloudLayer eveCloudLayer in Scatterer.Instance.EveReflectionHandler.EVECloudLayers[celestialBodyName])
+                foreach (EVECloudLayer eveCloudLayer in layers)
                 {
                     if (eveCloudLayer.Clouds2dMaterial != null)
                     {
