@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Scatterer
 {
-
     public class DisableAmbientLight : MonoBehaviour
     {
         Color ambientLight, originalAmbientLight;
@@ -28,7 +27,7 @@ namespace Scatterer
             RenderSettings.ambientLight = originalAmbientLight;
         }
 
-        public void OnDestroy()
+        public void Cleanup()
         {
             RestoreLight();
         }
