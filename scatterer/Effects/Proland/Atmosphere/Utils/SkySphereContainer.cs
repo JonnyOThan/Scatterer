@@ -224,7 +224,7 @@ namespace Scatterer
 
         public void OnPostRender()
         {
-            if (isEnabled)
+            if (isEnabled && targetCamera.stereoActiveEye != Camera.MonoOrStereoscopicEye.Left)
             {
                 targetCamera.RemoveCommandBuffer(localSkySphereEvent, commandBuffer);
                 Shader.SetGlobalInt(ShaderProperties.ScattererLocalSkyActiveOnCurrentCamera_PROPERTY, 0);
