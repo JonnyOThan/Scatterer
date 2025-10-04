@@ -69,7 +69,7 @@ namespace Scatterer
 
         private static bool atmoGenerationRunning = false;
 
-        public static Vector4 ScatteringLutDimensionsDefault { get => Scatterer.Instance.mainSettings.useLowResolutionAtmosphere ? scatteringLutDimensionsPreview : scatteringLutDimensionsDefault; }
+        public static Vector4 ScatteringLutDimensionsDefault { get => Scatterer.Instance != null && Scatterer.Instance.mainSettings.useLowResolutionAtmosphere ? scatteringLutDimensionsPreview : scatteringLutDimensionsDefault; }
 
         const int READ = 0; const int WRITE = 1;
 

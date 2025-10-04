@@ -9,13 +9,13 @@ namespace Scatterer
     public class MainSettingsReadWrite
     {
         [Persistent]
-        public bool autosavePlanetSettingsOnSceneChange=false;
+        public bool autosavePlanetSettingsOnSceneChange = false;
         
         [Persistent]
-        public bool disableAmbientLight=true;
+        public bool disableAmbientLight = true;
         
         [Persistent]
-        public bool integrateWithEVEClouds=true;
+        public bool integrateWithEVEClouds = true;
 
 //        [Persistent]
 //        public bool integrateEVECloudsGodrays=true;

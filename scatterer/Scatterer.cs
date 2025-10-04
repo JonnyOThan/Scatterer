@@ -53,6 +53,16 @@ namespace Scatterer
 
         void Awake ()
         {
+            // Editor scene transitions are additive, do this check and early exit first to avoid checking instance multiple times
+            isActive = HighLogic.LoadedSceneIsFlight || HighLogic.LoadedScene == GameScenes.SPACECENTER ||
+                        HighLogic.LoadedScene == GameScenes.TRACKSTATION || HighLogic.LoadedScene == GameScenes.MAINMENU;
+
+            if (!isActive)
+            {
+                UnityEngine.Object.Destroy(this);
+                return;
+            }
+
             if (instance == null)
             {
                 instance = this;
@@ -60,9 +70,8 @@ namespace Scatterer
             }
             else
             {
-                //destroy any duplicate instances that may be created by a duplicate install
-                Utils.LogError("Destroying duplicate instance, check your install for duplicate scatterer folders, or nested GameData folders");
-                UnityEngine.Object.Destroy(this);
+                // Destroy any duplicate instances that may be created by a duplicate install
+                Utils.LogError("Destroying duplicate instance, check your install for duplicate scatterer folders, or nested GameData folders");                
             }
 
             Utils.LogInfo ("Version:"+versionNumber);
@@ -71,37 +80,28 @@ namespace Scatterer
             Utils.LogInfo ("Compute shader support: " + SystemInfo.supportsComputeShaders.ToString());
             Utils.LogInfo ("Async GPU readback support: " + SystemInfo.supportsAsyncGPUReadback.ToString());
 
-            if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.TRACKSTATION || HighLogic.LoadedScene == GameScenes.MAINMENU)
+            LoadSettings ();
+            scattererCelestialBodiesManager.Init ();
+            guiHandler.Init();
+
+            if (mainSettings.useOceanShaders)
             {
-                isActive = true;
+                OceanUtils.removeStockOceansIfNotDone();
+            }
+            else
+            {
+                OceanUtils.restoreOceansIfNeeded();
+            }
 
-                LoadSettings ();
-                scattererCelestialBodiesManager.Init ();
-
-                guiHandler.Init();
-
-                if (mainSettings.useOceanShaders)
+            if (HighLogic.LoadedScene == GameScenes.MAINMENU)
+            {
+                if (mainSettings.integrateWithEVEClouds)
                 {
-                    OceanUtils.removeStockOceansIfNotDone();
-                }
-                else
-                {
-                    OceanUtils.restoreOceansIfNeeded();
-                }
-
-                if (HighLogic.LoadedScene == GameScenes.MAINMENU)
-                {
-                    if (mainSettings.integrateWithEVEClouds)
-                    {
-                        ShaderReplacer.Instance.ReplaceEVEshaders();
-                    }
+                    ShaderReplacer.Instance.ReplaceEVEshaders();
                 }
             }
 
-            if (isActive)
-            {
-                StartCoroutine (DelayedInit ());
-            }
+            StartCoroutine (DelayedInit ());
 
             // The built-in AA breaks basically all post effects
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedScene == GameScenes.SPACECENTER)
