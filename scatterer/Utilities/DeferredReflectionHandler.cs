@@ -69,6 +69,7 @@ namespace Scatterer
 
             if (deferredSSRType == null)
             {
+                Utils.LogError("Old version of Deferred installed, update Deferred to use ScreenSpaceReflections");
                 return;
             }
 
